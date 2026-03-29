@@ -1,0 +1,22 @@
+name: Vault example
+
+on:
+  workflow_dispatch:
+
+jobs:
+  vault:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Import Secrets from Vault
+        uses: hashicorp/vault-action@v2
+        with:
+          url: ${{ secrets.VAULT_ADDR }}
+          token: ${{ secrets.VAULT_TOKEN }}
+          secrets: |
+            secret/data/database/config username | DB_USERNAME ;
+            secret/data/database/config password | DB_PASSWORD
+      - name: Verify variables exist
+        run: |
+          test -n "$DB_USERNAME"
+          test -n "$DB_PASSWORD"

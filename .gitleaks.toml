@@ -1,0 +1,10 @@
+title = "secrets-management"
+
+# Minimal config: rely on gitleaks defaults.
+# You can add allowlists here if needed.
+
+[allowlist]
+description = "Allowlist for false positives"
+paths = [
+  "vault/dev/vault-data",
+]

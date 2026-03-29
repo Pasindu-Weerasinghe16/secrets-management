@@ -1,0 +1,29 @@
+name: Example - Vault Secrets
+
+on:
+  workflow_dispatch:
+
+jobs:
+  example:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Recommended for production: Vault OIDC/JWT auth (no long-lived token).
+      # This template shows token auth for simplicity.
+      - name: Import Secrets from Vault
+        uses: hashicorp/vault-action@v2
+        with:
+          url: ${{ secrets.VAULT_ADDR }}
+          token: ${{ secrets.VAULT_TOKEN }}
+          secrets: |
+            secret/data/database/config username | DB_USERNAME ;
+            secret/data/database/config password | DB_PASSWORD ;
+            secret/data/api/credentials key | API_KEY
+
+      - name: Use secrets
+        run: |
+          echo "DB user is set (not printing password)"
+          test -n "$DB_USERNAME"
+          test -n "$DB_PASSWORD"
+          test -n "$API_KEY"

@@ -1,0 +1,18 @@
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  image: hashicorp/vault:1.16
+  variables:
+    VAULT_ADDR: "https://vault.example.com:8200"
+  before_script:
+    # VAULT_TOKEN should be configured as a masked/protected GitLab variable
+    - test -n "$VAULT_TOKEN"
+  script:
+    - |
+      DB_PASSWORD=$(vault kv get -field=password secret/database/config)
+      API_KEY=$(vault kv get -field=key secret/api/credentials)
+      echo "Deploying with secrets (not printing them)"
+      test -n "$DB_PASSWORD"
+      test -n "$API_KEY"
