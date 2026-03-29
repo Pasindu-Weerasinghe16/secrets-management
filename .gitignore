@@ -1,0 +1,28 @@
+# Secrets
+*.pem
+*.pfx
+*.p12
+*.key
+*.crt
+*.cer
+*.der
+
+# Env files
+.env
+.env.*
+
+# Markdown docs
+*.md
+
+# Vault
+vault/dev/vault-data/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node / Python (if added later)
+node_modules/
+__pycache__/
+*.pyc
+.venv/
