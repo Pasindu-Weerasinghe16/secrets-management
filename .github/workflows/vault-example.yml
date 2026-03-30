@@ -1,14 +1,35 @@
-name: Vault example
+on:
+jobs:
+# Vault Secrets Example Workflow
+#
+# This workflow demonstrates fetching secrets from HashiCorp Vault using the official Vault Action.
+#
+# Prerequisites:
+# - VAULT_ADDR and VAULT_TOKEN set as repository secrets
+# - Vault contains secret/data/database/config with username and password fields
+#
+# Features:
+# - Securely fetches secrets from Vault
+# - Masks secrets in logs
+# - Verifies secrets are available
+# - Clear job/step names and comments
+
+name: "Vault Example"
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
 
 jobs:
-  vault:
+  fetch-vault-secrets:
+    name: "Fetch & Verify Vault Secrets"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Import Secrets from Vault
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+
+      - name: "Import secrets from Vault"
         uses: hashicorp/vault-action@v2
         with:
           url: ${{ secrets.VAULT_ADDR }}
@@ -16,7 +37,13 @@ jobs:
           secrets: |
             secret/data/database/config username | DB_USERNAME ;
             secret/data/database/config password | DB_PASSWORD
-      - name: Verify variables exist
+
+      - name: "Verify secrets are available and masked"
         run: |
-          test -n "$DB_USERNAME"
-          test -n "$DB_PASSWORD"
+          if [ -z "$DB_USERNAME" ] || [ -z "$DB_PASSWORD" ]; then
+            echo "Missing Vault secrets!" >&2
+            exit 1
+          fi
+          echo "::add-mask::$DB_USERNAME"
+          echo "::add-mask::$DB_PASSWORD"
+          echo "DB_USERNAME and DB_PASSWORD are set and masked."
