@@ -1,3 +1,39 @@
+# Node
+node_modules/
+
+# Archives
+*.zip
+*.tar.gz
+
+# Logs
+*.log
+
+# Environment files
+.env
+.aws/
+
+# IDEs
+.idea/
+.vscode/
+
+# Build outputs
+dist/
+build/
+
+# macOS
+.DS_Store
+
+# Databases
+*.sqlite
+
+# Secrets and local-only artifacts
+secrets/
+*.pem
+*.key
+
+# temp
+tmp/
+temp/
 # Secrets
 *.pem
 *.pfx

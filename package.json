@@ -1,0 +1,24 @@
+{
+  "name": "secrets-management",
+  "version": "1.0.0",
+  "description": "A free-first starter kit for secure secrets management in CI/CD.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pasindu-Weerasinghe16/secrets-management.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Pasindu-Weerasinghe16/secrets-management/issues"
+  },
+  "homepage": "https://github.com/Pasindu-Weerasinghe16/secrets-management#readme",
+  "dependencies": {
+    "aws-sdk": "^2.1693.0"
+  }
+}
