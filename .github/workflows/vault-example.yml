@@ -1,5 +1,3 @@
-on:
-jobs:
 # Vault Secrets Example Workflow
 #
 # This workflow demonstrates fetching secrets from HashiCorp Vault using the official Vault Action.
@@ -13,6 +11,7 @@ jobs:
 # - Masks secrets in logs
 # - Verifies secrets are available
 # - Clear job/step names and comments
+
 
 name: "Vault Example"
 
