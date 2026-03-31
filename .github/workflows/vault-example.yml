@@ -41,6 +41,7 @@ jobs:
             secret/data/database/config password | DB_PASSWORD
 
       - name: "Verify secrets are available and masked"
+        if: env.VAULT_ADDR != '' && env.VAULT_TOKEN != ''
         run: |
           if [ -z "$DB_USERNAME" ] || [ -z "$DB_PASSWORD" ]; then
             echo "Missing Vault secrets!" >&2

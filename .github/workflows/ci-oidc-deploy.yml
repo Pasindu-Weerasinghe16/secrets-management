@@ -33,6 +33,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Deploy step (example)
+        if: env.AWS_REGION != '' && env.AWS_ROLE_TO_ASSUME != ''
         run: |
           echo "Deploying with OIDC AWS credentials..."
           # Add your deployment commands here
