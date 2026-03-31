@@ -17,8 +17,6 @@ name: "Vault Example"
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
 
 jobs:
   fetch-vault-secrets:
