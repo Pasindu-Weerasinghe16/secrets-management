@@ -1,20 +1,11 @@
-on:
-jobs:
-# OIDC-based AWS Secret Fetch Example
+# CI/CD OIDC AWS Deployment Example
 #
-# This workflow demonstrates fetching a secret from AWS Secrets Manager using OIDC authentication in CI.
-#
+# This workflow demonstrates OIDC-based AWS authentication for CI/CD deployments.
 # Prerequisites:
-# - AWS OIDC role created and its ARN set below or as a secret
-# - Secret exists in AWS Secrets Manager (e.g., production/database/password)
-# - OIDC provider configured in AWS for GitHub Actions
-#
-# Features:
-# - Secure OIDC-based AWS authentication (no static credentials)
-# - Secret masking in logs
-# - Clear job/step names and comments
+# - AWS OIDC role (ARN in AWS_ROLE_TO_ASSUME secret)
+# - AWS_REGION set as a secret
 
-name: "CI OIDC AWS Secret Fetch"
+name: "CI OIDC AWS Deploy"
 
 on:
   workflow_dispatch:
@@ -22,31 +13,25 @@ on:
     branches: [main]
 
 jobs:
-  fetch-aws-secret:
-    name: "Fetch AWS Secret via OIDC"
+  deploy:
+    name: "Deploy with OIDC AWS Auth"
     runs-on: ubuntu-latest
     permissions:
-      id-token: write   # Required for OIDC authentication
+      id-token: write
       contents: read
     steps:
-      - name: "Checkout repository"
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: "Configure AWS credentials via OIDC"
+      - name: Configure AWS credentials via OIDC
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::239500134025:role/github-actions-secrets-access
-          aws-region: us-east-1
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: "Fetch secret from AWS Secrets Manager"
-        id: fetch_secret
+      - name: Deploy step (example)
         run: |
-          set -e
-          SECRET_ID="production/database/password"
-          SECRET_VALUE=$(aws secretsmanager get-secret-value --secret-id "$SECRET_ID" --query SecretString --output text)
-          echo "::add-mask::$SECRET_VALUE"  # Mask secret in logs
-          echo "SECRET_VALUE=$SECRET_VALUE" >> $GITHUB_ENV
+          echo "Deploying with OIDC AWS credentials..."
+          # Add your deployment commands here
 
-      - name: "Use secret in workflow (example)"
-        run: |
-          echo "Fetched secret is masked: ${{ env.SECRET_VALUE }}"
+
